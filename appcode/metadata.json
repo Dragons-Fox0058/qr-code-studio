@@ -1,0 +1,6 @@
+{
+  "name": "QR Kod Oluşturucu",
+  "description": "Modern tasarımlı QR kod oluşturucu, hızlı tarayıcı, logo ekleme, geçmiş ve paylaşım özellikleri sunan Android uygulaması.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
