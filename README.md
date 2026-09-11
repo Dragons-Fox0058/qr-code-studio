@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- LOGO -->
-<img src="appcode/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" width="120" alt="Logo"/>
+<img src="logo.png" width="120" alt="Logo"/>
 
 <h1>QR CODE STUDİO</h1>
 
