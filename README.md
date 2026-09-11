@@ -23,7 +23,7 @@
 <!-- Ekran görüntülerini buraya ekle -->
 | Create | Scan | History |
 |-----------|-------|---------|
-| ![](screenshots/Create.png) | ![](screenshots/Scan.png) | ![](screenshots/History.png) |
+| ![Create](Screenshots/Create.png) | ![Scan](Screenshots/Scan.png) | ![History](Screenshots/History.png) |
 
 ---
 
