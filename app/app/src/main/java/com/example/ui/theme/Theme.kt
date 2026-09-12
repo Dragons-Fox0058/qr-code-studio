@@ -46,7 +46,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun MyApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false, // Set false to ensure consistent branded look
+    dynamicColor: Boolean = true, // Material You: Uses wallpaper/system dynamic colors on Android 12+
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

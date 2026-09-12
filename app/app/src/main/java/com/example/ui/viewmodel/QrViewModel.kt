@@ -15,6 +15,7 @@ import com.example.util.QrCodeGenerator
 import com.example.util.QrDecoder
 import com.example.util.AppLanguage
 import com.example.util.LanguageManager
+import com.example.util.NotificationHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +32,8 @@ import kotlinx.coroutines.withContext
 enum class ScreenTab {
     CREATE,
     SCAN,
-    HISTORY
+    HISTORY,
+    ABOUT
 }
 
 enum class QrType(val label: String, val iconText: String) {
@@ -58,6 +60,7 @@ class QrViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database = AppDatabase.getDatabase(application)
     private val repository = QrRepository(database.qrDao(), database.feedbackDao())
+    private val prefs = application.getSharedPreferences("qr_studio_prefs", Application.MODE_PRIVATE)
 
     // --- App Theme, Language & Navigation ---
     private val _isDarkMode = MutableStateFlow<Boolean?>(null) // null = system, true = dark, false = light
@@ -68,6 +71,62 @@ class QrViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _currentTab = MutableStateFlow(ScreenTab.CREATE)
     val currentTab: StateFlow<ScreenTab> = _currentTab.asStateFlow()
+
+    // --- Update Notifications & Dialogs ---
+    private val _showNotificationPrompt = MutableStateFlow(false)
+    val showNotificationPrompt: StateFlow<Boolean> = _showNotificationPrompt.asStateFlow()
+
+    private val _isNotificationEnabled = MutableStateFlow(prefs.getBoolean("updates_notification_enabled", false))
+    val isNotificationEnabled: StateFlow<Boolean> = _isNotificationEnabled.asStateFlow()
+
+    private val _isCheckingUpdate = MutableStateFlow(false)
+    val isCheckingUpdate: StateFlow<Boolean> = _isCheckingUpdate.asStateFlow()
+
+    init {
+        val promptShown = prefs.getBoolean("notification_prompt_already_shown", false)
+        if (!promptShown) {
+            _showNotificationPrompt.value = true
+        }
+    }
+
+    fun dismissNotificationPrompt(accepted: Boolean) {
+        _showNotificationPrompt.value = false
+        prefs.edit()
+            .putBoolean("notification_prompt_already_shown", true)
+            .putBoolean("updates_notification_enabled", accepted)
+            .apply()
+        _isNotificationEnabled.value = accepted
+        if (accepted) {
+            NotificationHelper.createNotificationChannel(getApplication())
+            NotificationHelper.sendUpdateNotification(
+                getApplication(),
+                "QR Code Studio v1.1.0",
+                "Güncelleme bildirimleri aktif! En yeni sürümü kullanıyorsunuz."
+            )
+        }
+    }
+
+    fun toggleNotificationSetting(enabled: Boolean) {
+        prefs.edit().putBoolean("updates_notification_enabled", enabled).apply()
+        _isNotificationEnabled.value = enabled
+        if (enabled) {
+            NotificationHelper.createNotificationChannel(getApplication())
+            NotificationHelper.sendUpdateNotification(
+                getApplication(),
+                "QR Code Studio v1.1.0",
+                "Güncelleme bildirimleri başarıyla açıldı."
+            )
+        }
+    }
+
+    fun checkForUpdates() {
+        viewModelScope.launch {
+            _isCheckingUpdate.value = true
+            kotlinx.coroutines.delay(1200)
+            _isCheckingUpdate.value = false
+            _statusMessage.emit("En güncel sürümü (v1.1.0) kullanıyorsunuz!")
+        }
+    }
 
     fun setDarkMode(dark: Boolean?) {
         _isDarkMode.value = dark

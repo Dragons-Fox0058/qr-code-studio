@@ -128,7 +128,48 @@ data class TranslationStrings(
     val colorWhite: String,
     val colorCream: String,
     val colorLightGray: String,
-    val colorIceBlue: String
+    val colorIceBlue: String,
+
+    // About Screen
+    val tabAbout: String = "About",
+    val aboutTitle: String = "About",
+    val appVersion: String = "v1.1.0",
+    val checkUpdates: String = "Check for Updates",
+    val checkingForUpdates: String = "Checking for updates...",
+    val latestVersionInstalled: String = "You are using the latest version (v1.1.0)!",
+    val updateNotificationsTitle: String = "Update Notifications",
+    val updateNotificationsDesc: String = "Would you like to receive notifications when new updates or features are released?",
+    val allowNotifications: String = "Allow",
+    val notNow: String = "Not Now",
+    val notificationsActive: String = "Update notifications are active",
+    val notificationsOff: String = "Notifications disabled",
+    val projectLicenseTitle: String = "Project License (MIT)",
+    val projectLicenseSubtitle: String = "MIT License - dragons-fox0058",
+    val thirdPartyLicensesTitle: String = "Third-Party Licenses",
+    val thirdPartyLicensesSubtitle: String = "ZXing, CameraX, Room, Coil, Compose",
+    val repositoryTitle: String = "GitHub Repository",
+    val repositorySubtitle: String = "Dragons-Fox0058 / qr-code-studio",
+    val changelogTitle: String = "Changelog",
+    val changelogSubtitle: String = "v1.1.0 & v1.0.0 release notes",
+    val releaseBadge: String = "Release",
+    val currentVersionBadge: String = "Latest Version",
+    val initialVersionBadge: String = "Initial Release",
+    val designCredits: String = "Designed with Material Design 3 & Expressive Dynamic Color",
+    val changelogV110List: List<String> = listOf(
+        "Added About section with detailed app info",
+        "Integrated GitHub repository (Dragons-Fox0058/qr-code-studio)",
+        "Added update notification engine & first-run prompt",
+        "Added MIT Project License & Third-Party library licenses",
+        "Added interactive Changelog viewer",
+        "Enabled Android 12+ Material You dynamic wallpaper theming"
+    ),
+    val changelogV100List: List<String> = listOf(
+        "Customizable QR generator (URL, Text, Wi-Fi, Phone, Email, SMS)",
+        "Real-time camera & gallery image QR scanner (CameraX & ZXing)",
+        "Custom foreground/background colors and center logos",
+        "Offline local SQLite Room database history",
+        "20+ languages support with automatic system locale detection"
+    )
 )
 
 object LanguageManager {
@@ -251,7 +292,46 @@ object LanguageManager {
         colorWhite = "Beyaz",
         colorCream = "Krem",
         colorLightGray = "Açık Gri",
-        colorIceBlue = "Buz Mavisi"
+        colorIceBlue = "Buz Mavisi",
+        tabAbout = "Hakkında",
+        aboutTitle = "Hakkında",
+        appVersion = "v1.1.0",
+        checkUpdates = "Güncellemeleri Denetle",
+        checkingForUpdates = "Güncellemeler denetleniyor...",
+        latestVersionInstalled = "En güncel sürümü (v1.1.0) kullanıyorsunuz!",
+        updateNotificationsTitle = "Güncelleme Bildirimleri",
+        updateNotificationsDesc = "Uygulamaya yeni bir güncelleme veya özellik geldiğinde bildirim almak ister misiniz?",
+        allowNotifications = "İzin Ver",
+        notNow = "Şimdi Değil",
+        notificationsActive = "Güncelleme bildirimleri aktif",
+        notificationsOff = "Bildirimler kapalı",
+        projectLicenseTitle = "Proje Lisansı (MIT)",
+        projectLicenseSubtitle = "MIT Lisansı - dragons-fox0058",
+        thirdPartyLicensesTitle = "Üçüncü Taraf Lisansları",
+        thirdPartyLicensesSubtitle = "ZXing, CameraX, Room, Coil, Compose",
+        repositoryTitle = "GitHub Deposu",
+        repositorySubtitle = "Dragons-Fox0058 / qr-code-studio",
+        changelogTitle = "Değişiklik Günlüğü",
+        changelogSubtitle = "v1.1.0 ve v1.0.0 sürüm notları",
+        releaseBadge = "Kararlı",
+        currentVersionBadge = "Güncel Sürüm",
+        initialVersionBadge = "İlk Sürüm",
+        designCredits = "Material Design 3 ve Expressive Dinamik Renk ile tasarlandı",
+        changelogV110List = listOf(
+            "Hakkında sekmesi eklendi",
+            "GitHub deposu (Dragons-Fox0058/qr-code-studio) entegre edildi",
+            "Güncelleme bildirimleri sistemi ve ilk açılış izni eklendi",
+            "Proje (MIT) ve Üçüncü Taraf lisansları eklendi",
+            "Etkileşimli Değişiklik Günlüğü (Changelog) eklendi",
+            "Android 12+ Material You dinamik duvar kağıdı teması aktif edildi"
+        ),
+        changelogV100List = listOf(
+            "Özelleştirilebilir QR kod oluşturucu (URL, Metin, Wi-Fi, Telefon, E-posta, SMS)",
+            "Canlı kamera ve galeriden görsel tarama (CameraX & ZXing)",
+            "Özel renkler ve merkez logo desteği",
+            "Yerel SQLite Room veritabanı ile geçmiş kaydı",
+            "20+ dil desteği ve otomatik sistem dili algılama"
+        )
     )
 
     private val englishStrings = TranslationStrings(
@@ -413,7 +493,17 @@ object LanguageManager {
         emptyScannedHistory = "Aún no hay códigos escaneados",
         emptyCreatedHistory = "Aún no hay códigos creados",
         recordDeleted = "Registro eliminado.",
-        historyCleared = "Historial borrado."
+        historyCleared = "Historial borrado.",
+        tabAbout = "Acerca de",
+        aboutTitle = "Acerca de",
+        checkUpdates = "Buscar actualizaciones",
+        repositoryTitle = "Repositorio GitHub",
+        projectLicenseTitle = "Licencia del proyecto (MIT)",
+        thirdPartyLicensesTitle = "Licencias de terceros",
+        changelogTitle = "Registro de cambios",
+        releaseBadge = "Estable",
+        currentVersionBadge = "Versión actual",
+        initialVersionBadge = "Versión inicial"
     )
 
     private val germanStrings = englishStrings.copy(
@@ -485,7 +575,17 @@ object LanguageManager {
         emptyScannedHistory = "Noch keine gescannten QR-Codes",
         emptyCreatedHistory = "Noch keine erstellten QR-Codes",
         recordDeleted = "Eintrag gelöscht.",
-        historyCleared = "Verlauf geleert."
+        historyCleared = "Verlauf geleert.",
+        tabAbout = "Über",
+        aboutTitle = "Über",
+        checkUpdates = "Nach Updates suchen",
+        repositoryTitle = "GitHub-Repository",
+        projectLicenseTitle = "Projektlizenz (MIT)",
+        thirdPartyLicensesTitle = "Drittanbieter-Lizenzen",
+        changelogTitle = "Änderungsprotokoll",
+        releaseBadge = "Stabil",
+        currentVersionBadge = "Aktuelle Version",
+        initialVersionBadge = "Erstversion"
     )
 
     private val frenchStrings = englishStrings.copy(
@@ -557,7 +657,17 @@ object LanguageManager {
         emptyScannedHistory = "Aucun code QR scanné pour l'instant",
         emptyCreatedHistory = "Aucun code QR créé pour l'instant",
         recordDeleted = "Élément supprimé.",
-        historyCleared = "Historique effacé."
+        historyCleared = "Historique effacé.",
+        tabAbout = "À propos",
+        aboutTitle = "À propos",
+        checkUpdates = "Vérifier les mises à jour",
+        repositoryTitle = "Dépôt GitHub",
+        projectLicenseTitle = "Licence du projet (MIT)",
+        thirdPartyLicensesTitle = "Licences tierces",
+        changelogTitle = "Journal des modifications",
+        releaseBadge = "Stable",
+        currentVersionBadge = "Version actuelle",
+        initialVersionBadge = "Version initiale"
     )
 
     private val italianStrings = englishStrings.copy(
@@ -701,7 +811,17 @@ object LanguageManager {
         emptyScannedHistory = "Nenhum código QR escaneado ainda",
         emptyCreatedHistory = "Nenhum código QR criado ainda",
         recordDeleted = "Registro excluído.",
-        historyCleared = "Histórico limpo."
+        historyCleared = "Histórico limpo.",
+        tabAbout = "Sobre",
+        aboutTitle = "Sobre",
+        checkUpdates = "Verificar atualizações",
+        repositoryTitle = "Repositório GitHub",
+        projectLicenseTitle = "Licença do Projeto (MIT)",
+        thirdPartyLicensesTitle = "Licenças de Terceiros",
+        changelogTitle = "Registro de Alterações",
+        releaseBadge = "Estável",
+        currentVersionBadge = "Versão Atual",
+        initialVersionBadge = "Versão Inicial"
     )
 
     private val russianStrings = englishStrings.copy(
@@ -773,7 +893,17 @@ object LanguageManager {
         emptyScannedHistory = "Пока нет отсканированных QR-кодов",
         emptyCreatedHistory = "Пока нет созданных QR-кодов",
         recordDeleted = "Запись удалена.",
-        historyCleared = "История очищена."
+        historyCleared = "История очищена.",
+        tabAbout = "О приложении",
+        aboutTitle = "О приложении",
+        checkUpdates = "Проверить обновления",
+        repositoryTitle = "Репозиторий GitHub",
+        projectLicenseTitle = "Лицензия проекта (MIT)",
+        thirdPartyLicensesTitle = "Сторонние лицензии",
+        changelogTitle = "Список изменений",
+        releaseBadge = "Стабильная",
+        currentVersionBadge = "Текущая версия",
+        initialVersionBadge = "Первый релиз"
     )
 
     private val chineseStrings = englishStrings.copy(

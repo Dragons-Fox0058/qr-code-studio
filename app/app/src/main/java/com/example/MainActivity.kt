@@ -1,10 +1,14 @@
 package com.example
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -17,10 +21,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,6 +38,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -48,6 +56,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.ui.screens.AboutScreen
 import com.example.ui.screens.GeneratorScreen
 import com.example.ui.screens.HistoryScreen
 import com.example.ui.screens.ScannerScreen
@@ -89,8 +98,56 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
+            // Notification Prompt Launcher for Android 13+
+            val showNotificationPrompt by viewModel.showNotificationPrompt.collectAsState()
+            val notificationPermissionLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestPermission()
+            ) { isGranted ->
+                viewModel.dismissNotificationPrompt(isGranted)
+            }
+
+            if (showNotificationPrompt) {
+                AlertDialog(
+                    onDismissRequest = { viewModel.dismissNotificationPrompt(false) },
+                    icon = {
+                        Icon(
+                            Icons.Default.NotificationsActive,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    title = { Text(strings.updateNotificationsTitle) },
+                    text = { Text(strings.updateNotificationsDesc) },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                    notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                } else {
+                                    viewModel.dismissNotificationPrompt(true)
+                                }
+                            },
+                            modifier = Modifier.testTag("dialog_allow_notifications_btn")
+                        ) {
+                            Text(strings.allowNotifications)
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(
+                            onClick = { viewModel.dismissNotificationPrompt(false) },
+                            modifier = Modifier.testTag("dialog_dismiss_notifications_btn")
+                        ) {
+                            Text(strings.notNow)
+                        }
+                    }
+                )
+            }
+
             CompositionLocalProvider(LocalAppStrings provides strings) {
-                MyApplicationTheme(darkTheme = effectiveDark) {
+                MyApplicationTheme(
+                    darkTheme = effectiveDark,
+                    dynamicColor = true // Android 12+ Material You dynamic color system from system wallpaper
+                ) {
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
                         topBar = {
@@ -193,6 +250,13 @@ class MainActivity : ComponentActivity() {
                                     label = { Text(strings.tabHistory) },
                                     modifier = Modifier.testTag("nav_item_history")
                                 )
+                                NavigationBarItem(
+                                    selected = currentTab == ScreenTab.ABOUT,
+                                    onClick = { viewModel.selectTab(ScreenTab.ABOUT) },
+                                    icon = { Icon(Icons.Default.Info, contentDescription = strings.tabAbout) },
+                                    label = { Text(strings.tabAbout) },
+                                    modifier = Modifier.testTag("nav_item_about")
+                                )
                             }
                         }
                     ) { innerPadding ->
@@ -226,6 +290,9 @@ class MainActivity : ComponentActivity() {
                                             viewModel.selectTab(ScreenTab.CREATE)
                                         }
                                     )
+                                }
+                                ScreenTab.ABOUT -> {
+                                    AboutScreen(viewModel = viewModel)
                                 }
                             }
                         }
