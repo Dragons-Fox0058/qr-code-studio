@@ -33,24 +33,30 @@
 - [How to Build](#how-to-build)
 - [Permissions](#permissions)
 - [Contributing](#contributing)
+- [Changelog](#changelog)
 - [Licence](#licence)
 
 ---
 
 ## ![](https://img.shields.io/badge/Screenshots-1B3A2D?style=flat-square&logo=android&logoColor=3DDC84) Screenshots
 
-| Create | Scan | History |
-|--------|------|---------|
-| ![Create](Screenshots/Create.png) | ![Scan](Screenshots/Scan.png) | ![History](Screenshots/History.png) |
+| Create | Scan | History | About |
+|--------|------|---------|-------|
+| ![Create](Screenshots/Create.png) | ![Scan](Screenshots/Scan.png) | ![History](Screenshots/History.png) | ![About](Screenshots/About.png) |
 
 ---
 
 ## ![](https://img.shields.io/badge/Features-2D1B4E?style=flat-square&logo=materialdesign&logoColor=B39DDB) Features
 
-- 20 Language support
+- 20+ Language support
 - Free QR code generation
-- Scanning the QR code
-- The ability to look back at the past
+- QR code scanning via camera and gallery
+- Scan history
+- About screen with version info and changelog
+- Smart update & notification system
+- GitHub repository card
+- License & third-party library transparency
+- Material You dynamic color (Android 12+)
 - Material 3 design language
 - Dark mode support
 
@@ -92,10 +98,11 @@ The application supports **20 languages**:
 | [Kotlin](https://kotlinlang.org/) | Main programming language |
 | [Jetpack Compose](https://developer.android.com/jetpack/compose) | Modern user interface toolkit |
 | [Material 3](https://m3.material.io/) | Design system |
-| [AndroidX CameraX](https://developer.android.com/jetpack/androidx/releases/camera?hl=en) | Camera connection |
-| [ZXing Core](https://zxing.github.io/zxing/) | Generating a QR code |
-| [AndroidX Room](https://developer.android.com/jetpack/androidx/releases/room?hl=en) | For storage |
-| [Android Photo Picker](https://developer.android.com/training/data-storage/shared/photo-picker?hl=en) | Photo selection |
+| [AndroidX CameraX](https://developer.android.com/jetpack/androidx/releases/camera?hl=en) | Camera integration |
+| [ZXing Core](https://zxing.github.io/zxing/) | QR code generation and decoding |
+| [AndroidX Room](https://developer.android.com/jetpack/androidx/releases/room?hl=en) | Local database storage |
+| [Coil Compose](https://coil-kt.github.io/coil/compose/) | Image loading |
+| [Android Photo Picker](https://developer.android.com/training/data-storage/shared/photo-picker?hl=en) | Privacy-safe photo selection |
 
 ---
 
@@ -148,11 +155,12 @@ git clone https://github.com/Dragons-Fox0058/qr-code-studio.git
 
 The app is designed with **privacy in mind** and uses the minimum number of permissions possible.
 
-### ✅ Runtime Permission (User Approval Required)
+### ✅ Runtime Permissions (User Approval Required)
 
 | Permission | Reason | When Asked |
 |---|---|---|
 | `CAMERA` | To scan QR codes live via camera | Only when switching to the **Scan** tab |
+| `POST_NOTIFICATIONS` | To notify when a new version is available (Android 13+) | On first launch |
 
 ### ⚙️ Normal Permission (Granted Automatically at Install)
 
@@ -176,15 +184,15 @@ Contributions are welcome! Here's how to get started:
 1. **Fork** this repository
 2. **Create** a new branch
 ```bash
-   git checkout -b feature/your-feature-name
+git checkout -b feature/your-feature-name
 ```
 3. **Make** your changes and commit
 ```bash
-   git commit -m "feat: add your feature description"
+git commit -m "feat: add your feature description"
 ```
 4. **Push** to your branch
 ```bash
-   git push origin feature/your-feature-name
+git push origin feature/your-feature-name
 ```
 5. **Open** a Pull Request on GitHub
 
@@ -192,6 +200,29 @@ Contributions are welcome! Here's how to get started:
 - Follow [Kotlin coding conventions](https://kotlinlang.org/docs/coding-conventions.html)
 - Use Material 3 components for any UI changes
 - Test on both light and dark mode before submitting
+
+---
+
+## ![](https://img.shields.io/badge/Changelog-1A0F3A?style=flat-square&logo=kotlin&logoColor=7F52FF) Changelog
+
+### ![](https://img.shields.io/badge/v1.1.0-3DDC84?style=flat-square&logo=android&logoColor=white) — Latest
+
+- **About Screen** — New 4th tab in bottom navigation with custom logo, version badge and release status
+- **Smart Update & Notification System** — First-launch permission dialog, Android 13+ `POST_NOTIFICATIONS` support, background notification channel and manual update check button
+- **GitHub Repository Card** — One-tap link to open the repository in browser
+- **License & Transparency** — MIT License dialog and third-party licenses (ZXing, CameraX, Room, Coil, Compose, Kotlin)
+- **Interactive Changelog** — In-app version history for v1.0.0 and v1.1.0
+- **Material You (Dynamic Color)** — Android 12+ (API 31+) wallpaper-based dynamic theming
+- **Full Localization** — All new screens fully translated in 20+ languages
+
+### ![](https://img.shields.io/badge/v1.0.0-A8A9AD?style=flat-square&logo=android&logoColor=white) — Initial Release
+
+- QR code generation
+- QR code scanning via camera and gallery
+- Scan history with Room database
+- Material 3 design
+- Dark mode support
+- 20 language support
 
 ---
 
