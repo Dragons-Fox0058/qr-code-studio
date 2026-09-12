@@ -5,14 +5,18 @@
 
 <h1>QR CODE STUDİO</h1>
 
+<!-- BADGES -->
+[![Download](https://img.shields.io/badge/Android-Download-0D47A1?style=for-the-badge&logo=android&logoColor=white&labelColor=3DDC84)](https://github.com/Dragons-Fox0058/qr-code-studio/releases/tag/v1.0.0)
+
+
 <p>This is a QR code scanning application created using artificial intelligence (Google AI Studio).</p>
 
 <!-- BADGES -->
-[![API 24+](https://img.shields.io/badge/API-24%2B-brightgreen?style=for-the-badge&logo=android&logoColor=white)](https://android-arsenal.com/api?level=24)
+[![API 24+](https://img.shields.io/badge/API-24%2B-brightgreen?style=for-the-badge&logo=android&logoColor=white&labelColor=00838F)](https://android-arsenal.com/api?level=24)
 [![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)](https://kotlinlang.org)
 [![Jetpack Compose](https://img.shields.io/badge/Jetpack_Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
-[![Material 3](https://img.shields.io/badge/Material_3-757575?style=for-the-badge&logo=material-design&logoColor=white)](https://m3.material.io)
-[![License MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![Material 3](https://img.shields.io/badge/Material_3-6750A4?style=for-the-badge&logo=material-design&logoColor=white)](https://m3.material.io)
+[![License MIT](https://img.shields.io/badge/License-MIT-A31F34?style=for-the-badge&labelColor=A8A9AD)](https://opensource.org/licenses/MIT)
 
 </div>
 
