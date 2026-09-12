@@ -110,7 +110,7 @@ The application supports **20 languages**:
 
 ### Requirements
 - Android **7.0 (API 24)** or higher
-- ~10 MB free storage
+- ~27 MB free storage
 
 ### Steps
 
