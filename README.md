@@ -6,7 +6,7 @@
 <h1>QR CODE STUDİO</h1>
 
 <!-- BADGES -->
-[![Download](https://img.shields.io/badge/Android-Download-0D47A1?style=for-the-badge&logo=android&logoColor=white&labelColor=3DDC84)](https://github.com/Dragons-Fox0058/qr-code-studio/releases/tag/v1.0.0)
+[![Download](https://img.shields.io/badge/Android-Download-0D47A1?style=for-the-badge&logo=android&logoColor=white&labelColor=3DDC84)](https://github.com/Dragons-Fox0058/qr-code-studio/releases/latest)
 
 
 <p>This is a QR code scanning application created using artificial intelligence (Google AI Studio).</p>
