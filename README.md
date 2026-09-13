@@ -23,7 +23,7 @@
 
 ---
 
-## ![](https://img.shields.io/badge/Table_of_Contents-0D2048?style=flat-square&logo=googledocs&logoColor=4285F4) Table of Contents
+## ![](https://img.shields.io/badge/Table_of_Contents-0D2048?style=flat-square&logo=googledocs&logoColor=4285F4) 
 
 - [Screenshots](#screenshots)
 - [Features](#features)
@@ -38,7 +38,7 @@
 
 ---
 
-## ![](https://img.shields.io/badge/Screenshots-1B3A2D?style=flat-square&logo=android&logoColor=3DDC84) Screenshots
+## ![](https://img.shields.io/badge/Screenshots-1B3A2D?style=flat-square&logo=android&logoColor=3DDC84) 
 
 | Create | Scan | History | About |
 |--------|------|---------|-------|
@@ -46,7 +46,7 @@
 
 ---
 
-## ![](https://img.shields.io/badge/Features-2D1B4E?style=flat-square&logo=materialdesign&logoColor=B39DDB) Features
+## ![](https://img.shields.io/badge/Features-2D1B4E?style=flat-square&logo=materialdesign&logoColor=B39DDB) 
 
 - 20+ Language support
 - Free QR code generation
@@ -62,7 +62,7 @@
 
 ---
 
-## ![](https://img.shields.io/badge/Supported_Languages-0D2048?style=flat-square&logo=googletranslate&logoColor=4285F4) Supported Languages
+## ![](https://img.shields.io/badge/Supported_Languages-0D2048?style=flat-square&logo=googletranslate&logoColor=4285F4) 
 
 The application supports **20 languages**:
 
@@ -91,7 +91,7 @@ The application supports **20 languages**:
 
 ---
 
-## ![](https://img.shields.io/badge/Technologies_Used-1A0F3A?style=flat-square&logo=kotlin&logoColor=7F52FF) Technologies Used
+## ![](https://img.shields.io/badge/Technologies_Used-1A0F3A?style=flat-square&logo=kotlin&logoColor=7F52FF) 
 
 | Technology | Explanation |
 |-----------|-------------|
@@ -106,7 +106,7 @@ The application supports **20 languages**:
 
 ---
 
-## ![](https://img.shields.io/badge/Installation-1B3A2D?style=flat-square&logo=android&logoColor=3DDC84) Installation
+## ![](https://img.shields.io/badge/Installation-1B3A2D?style=flat-square&logo=android&logoColor=3DDC84) 
 
 ### Requirements
 - Android **7.0 (API 24)** or higher
@@ -114,7 +114,7 @@ The application supports **20 languages**:
 
 ### Steps
 
-1. Go to the [**Releases**](https://github.com/Dragons-Fox0058/qr-code-studio/releases/latest) page
+1. Go to the [**Releases**](https://github.com/Dragons-Fox0058/qr-code-studio/releases/latest) 
 2. Download the latest **`.apk`** file
 3. On your Android device, open the downloaded file
 4. If prompted, enable **"Install from unknown sources"** in your settings
@@ -124,7 +124,7 @@ The application supports **20 languages**:
 
 ---
 
-## ![](https://img.shields.io/badge/How_to_Build-1A0F3A?style=flat-square&logo=kotlin&logoColor=7F52FF) How to Build
+## ![](https://img.shields.io/badge/How_to_Build-1A0F3A?style=flat-square&logo=kotlin&logoColor=7F52FF) 
 
 ### Requirements
 - [Android Studio](https://developer.android.com/studio) Hedgehog or newer
@@ -151,7 +151,7 @@ git clone https://github.com/Dragons-Fox0058/qr-code-studio.git
 
 ---
 
-## ![](https://img.shields.io/badge/Permissions-3B0A14?style=flat-square&logo=gnuprivacyguard&logoColor=EF5350) Permissions
+## ![](https://img.shields.io/badge/Permissions-3B0A14?style=flat-square&logo=gnuprivacyguard&logoColor=EF5350) 
 
 The app is designed with **privacy in mind** and uses the minimum number of permissions possible.
 
@@ -177,7 +177,7 @@ The app is designed with **privacy in mind** and uses the minimum number of perm
 
 ---
 
-## ![](https://img.shields.io/badge/Contributing-2D1B4E?style=flat-square&logo=materialdesign&logoColor=B39DDB) Contributing
+## ![](https://img.shields.io/badge/Contributing-2D1B4E?style=flat-square&logo=materialdesign&logoColor=B39DDB) 
 
 Contributions are welcome! Here's how to get started:
 
@@ -203,9 +203,9 @@ git push origin feature/your-feature-name
 
 ---
 
-## ![](https://img.shields.io/badge/Changelog-1A0F3A?style=flat-square&logo=kotlin&logoColor=7F52FF) Changelog
+## ![](https://img.shields.io/badge/Changelog-1A0F3A?style=flat-square&logo=kotlin&logoColor=7F52FF) 
 
-### ![](https://img.shields.io/badge/v1.1.0-3DDC84?style=flat-square&logo=android&logoColor=white) — Latest
+### ![](https://img.shields.io/badge/v1.1.0-3DDC84?style=flat-square&logo=android&logoColor=white) 
 
 - **About Screen** — New 4th tab in bottom navigation with custom logo, version badge and release status
 - **Smart Update & Notification System** — First-launch permission dialog, Android 13+ `POST_NOTIFICATIONS` support, background notification channel and manual update check button
@@ -215,7 +215,7 @@ git push origin feature/your-feature-name
 - **Material You (Dynamic Color)** — Android 12+ (API 31+) wallpaper-based dynamic theming
 - **Full Localization** — All new screens fully translated in 20+ languages
 
-### ![](https://img.shields.io/badge/v1.0.0-A8A9AD?style=flat-square&logo=android&logoColor=white) — Initial Release
+### ![](https://img.shields.io/badge/v1.0.0-A8A9AD?style=flat-square&logo=android&logoColor=white) 
 
 - QR code generation
 - QR code scanning via camera and gallery
@@ -226,6 +226,6 @@ git push origin feature/your-feature-name
 
 ---
 
-## ![](https://img.shields.io/badge/Licence-2D2D30?style=flat-square&logo=opensourceinitiative&logoColor=A8A9AD) Licence
+## ![](https://img.shields.io/badge/Licence-2D2D30?style=flat-square&logo=opensourceinitiative&logoColor=A8A9AD) 
 
 This project is licensed under the **MIT License** — see the [![License MIT](https://img.shields.io/badge/License-MIT-A31F34?style=flat-square&labelColor=A8A9AD)](https://opensource.org/licenses/MIT) for details.
