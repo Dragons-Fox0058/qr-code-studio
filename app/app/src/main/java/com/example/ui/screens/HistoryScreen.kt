@@ -214,11 +214,7 @@ fun HistoryScreen(
                             Toast.makeText(context, strings.copiedToClipboard, Toast.LENGTH_SHORT).show()
                         },
                         onShare = {
-                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                                type = "text/plain"
-                                putExtra(Intent.EXTRA_TEXT, item.content)
-                            }
-                            context.startActivity(Intent.createChooser(shareIntent, strings.shareChooserTitle))
+                            viewModel.openShareSheet(item.content)
                         },
                         onDelete = { viewModel.deleteItem(item) },
                         onOpen = {

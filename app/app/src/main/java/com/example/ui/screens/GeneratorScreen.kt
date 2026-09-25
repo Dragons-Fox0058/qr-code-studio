@@ -494,11 +494,9 @@ fun GeneratorScreen(
                     Button(
                         onClick = {
                             generatedBitmap?.let { bmp ->
-                                QrCodeGenerator.shareQrCode(
-                                    context = context,
-                                    bitmap = bmp,
-                                    title = viewModel.buildTitle(),
-                                    content = viewModel.buildContent()
+                                viewModel.openShareSheet(
+                                    text = viewModel.buildContent(),
+                                    bitmap = bmp
                                 )
                             }
                         },

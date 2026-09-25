@@ -3,6 +3,8 @@ package com.example.ui.viewmodel
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.media.AudioManager
+import android.media.ToneGenerator
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,12 +12,14 @@ import com.example.data.local.AppDatabase
 import com.example.data.model.FeedbackItem
 import com.example.data.model.QrItem
 import com.example.data.repository.QrRepository
-import com.example.util.LogoHelper
-import com.example.util.QrCodeGenerator
-import com.example.util.QrDecoder
+import com.example.ui.theme.AppThemeMode
 import com.example.util.AppLanguage
 import com.example.util.LanguageManager
+import com.example.util.LogoHelper
 import com.example.util.NotificationHelper
+import com.example.util.QrCodeGenerator
+import com.example.util.QrDecoder
+import com.example.util.TranslationHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,11 +32,15 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import java.net.HttpURLConnection
+import java.net.URL
 
 enum class ScreenTab {
     CREATE,
     SCAN,
     HISTORY,
+    SETTINGS,
     ABOUT
 }
 
@@ -56,6 +64,15 @@ data class ColorOption(
     val hex: String
 )
 
+data class GitHubRelease(
+    val tagName: String,
+    val name: String,
+    val publishedAt: String,
+    val body: String,
+    val htmlUrl: String,
+    val points: List<String>
+)
+
 class QrViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database = AppDatabase.getDatabase(application)
@@ -66,11 +83,230 @@ class QrViewModel(application: Application) : AndroidViewModel(application) {
     private val _isDarkMode = MutableStateFlow<Boolean?>(null) // null = system, true = dark, false = light
     val isDarkMode: StateFlow<Boolean?> = _isDarkMode.asStateFlow()
 
+    private val _useDynamicColor = MutableStateFlow(prefs.getBoolean("use_dynamic_color", true))
+    val useDynamicColor: StateFlow<Boolean> = _useDynamicColor.asStateFlow()
+
+    private val savedThemeMode = try {
+        AppThemeMode.valueOf(prefs.getString("app_theme_mode", AppThemeMode.DYNAMIC.name) ?: AppThemeMode.DYNAMIC.name)
+    } catch (_: Exception) {
+        AppThemeMode.DYNAMIC
+    }
+    private val _themeMode = MutableStateFlow(savedThemeMode)
+    val themeMode: StateFlow<AppThemeMode> = _themeMode.asStateFlow()
+
     private val _selectedLanguage = MutableStateFlow(AppLanguage.SYSTEM)
     val selectedLanguage: StateFlow<AppLanguage> = _selectedLanguage.asStateFlow()
 
     private val _currentTab = MutableStateFlow(ScreenTab.CREATE)
     val currentTab: StateFlow<ScreenTab> = _currentTab.asStateFlow()
+
+    // --- Advanced Scanner & Generator Settings ---
+    private val _vibrateOnScan = MutableStateFlow(prefs.getBoolean("vibrate_on_scan", true))
+    val vibrateOnScan: StateFlow<Boolean> = _vibrateOnScan.asStateFlow()
+
+    private val _beepOnScan = MutableStateFlow(prefs.getBoolean("beep_on_scan", true))
+    val beepOnScan: StateFlow<Boolean> = _beepOnScan.asStateFlow()
+
+    private val _autoCopyScan = MutableStateFlow(prefs.getBoolean("auto_copy_scan", false))
+    val autoCopyScan: StateFlow<Boolean> = _autoCopyScan.asStateFlow()
+
+    private val _autoOpenWeb = MutableStateFlow(prefs.getBoolean("auto_open_web", false))
+    val autoOpenWeb: StateFlow<Boolean> = _autoOpenWeb.asStateFlow()
+
+    private val _continuousScan = MutableStateFlow(prefs.getBoolean("continuous_scan", false))
+    val continuousScan: StateFlow<Boolean> = _continuousScan.asStateFlow()
+
+    private val _defaultErrorCorrection = MutableStateFlow(prefs.getString("default_error_correction", "M") ?: "M")
+    val defaultErrorCorrection: StateFlow<String> = _defaultErrorCorrection.asStateFlow()
+
+    private val _defaultQrSize = MutableStateFlow(prefs.getInt("default_qr_size", 512))
+    val defaultQrSize: StateFlow<Int> = _defaultQrSize.asStateFlow()
+
+    private val _defaultExportFormat = MutableStateFlow(prefs.getString("default_export_format", "PNG") ?: "PNG")
+    val defaultExportFormat: StateFlow<String> = _defaultExportFormat.asStateFlow()
+
+    // --- GitHub Releases State ---
+    private val _gitHubReleases = MutableStateFlow<List<GitHubRelease>>(emptyList())
+    val gitHubReleases: StateFlow<List<GitHubRelease>> = _gitHubReleases.asStateFlow()
+
+    private val _isLoadingReleases = MutableStateFlow(false)
+    val isLoadingReleases: StateFlow<Boolean> = _isLoadingReleases.asStateFlow()
+
+    private val _releasesFetchError = MutableStateFlow<String?>(null)
+    val releasesFetchError: StateFlow<String?> = _releasesFetchError.asStateFlow()
+
+    // --- Translation Engine State ---
+    private val _translationTargetLang = MutableStateFlow(prefs.getString("translation_target_lang", "tr") ?: "tr")
+    val translationTargetLang: StateFlow<String> = _translationTargetLang.asStateFlow()
+
+    private val _translatedText = MutableStateFlow<String?>(null)
+    val translatedText: StateFlow<String?> = _translatedText.asStateFlow()
+
+    private val _isTranslating = MutableStateFlow(false)
+    val isTranslating: StateFlow<Boolean> = _isTranslating.asStateFlow()
+
+    private val _translationIsOnline = MutableStateFlow(true)
+    val translationIsOnline: StateFlow<Boolean> = _translationIsOnline.asStateFlow()
+
+    // --- Custom In-App Share Sheet State ---
+    private val _showShareSheet = MutableStateFlow(false)
+    val showShareSheet: StateFlow<Boolean> = _showShareSheet.asStateFlow()
+
+    private val _shareTargetText = MutableStateFlow("")
+    val shareTargetText: StateFlow<String> = _shareTargetText.asStateFlow()
+
+    private val _shareTargetBitmap = MutableStateFlow<Bitmap?>(null)
+    val shareTargetBitmap: StateFlow<Bitmap?> = _shareTargetBitmap.asStateFlow()
+
+    fun openShareSheet(text: String, bitmap: Bitmap? = null) {
+        _shareTargetText.value = text
+        _shareTargetBitmap.value = bitmap
+        _showShareSheet.value = true
+    }
+
+    fun closeShareSheet() {
+        _showShareSheet.value = false
+    }
+
+    fun setUseDynamicColor(enabled: Boolean) {
+        _useDynamicColor.value = enabled
+        prefs.edit().putBoolean("use_dynamic_color", enabled).apply()
+    }
+
+    fun setThemeMode(mode: AppThemeMode) {
+        _themeMode.value = mode
+        prefs.edit().putString("app_theme_mode", mode.name).apply()
+    }
+
+    fun setVibrateOnScan(enabled: Boolean) {
+        _vibrateOnScan.value = enabled
+        prefs.edit().putBoolean("vibrate_on_scan", enabled).apply()
+    }
+
+    fun setBeepOnScan(enabled: Boolean) {
+        _beepOnScan.value = enabled
+        prefs.edit().putBoolean("beep_on_scan", enabled).apply()
+    }
+
+    fun setContinuousScan(enabled: Boolean) {
+        _continuousScan.value = enabled
+        prefs.edit().putBoolean("continuous_scan", enabled).apply()
+    }
+
+    fun setDefaultQrSize(size: Int) {
+        _defaultQrSize.value = size
+        prefs.edit().putInt("default_qr_size", size).apply()
+    }
+
+    fun setDefaultExportFormat(format: String) {
+        _defaultExportFormat.value = format
+        prefs.edit().putString("default_export_format", format).apply()
+    }
+
+    fun clearAppCache() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                getApplication<Application>().cacheDir.deleteRecursively()
+                _statusMessage.emit("Önbellek başarıyla temizlendi.")
+            } catch (_: Exception) {
+                _statusMessage.emit("Önbellek temizlenemedi.")
+            }
+        }
+    }
+
+    fun fetchGitHubReleases() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _isLoadingReleases.value = true
+            _releasesFetchError.value = null
+            try {
+                val url = URL("https://api.github.com/repos/Dragons-Fox0058/qr-code-studio/releases")
+                val connection = (url.openConnection() as HttpURLConnection).apply {
+                    requestMethod = "GET"
+                    setRequestProperty("Accept", "application/vnd.github.v3+json")
+                    setRequestProperty("User-Agent", "QRCodeStudio-Android")
+                    connectTimeout = 7000
+                    readTimeout = 7000
+                }
+
+                val code = connection.responseCode
+                if (code in 200..299) {
+                    val responseText = connection.inputStream.bufferedReader().use { it.readText() }
+                    val array = JSONArray(responseText)
+                    val releases = mutableListOf<GitHubRelease>()
+                    for (i in 0 until array.length()) {
+                        val obj = array.getJSONObject(i)
+                        val tagName = obj.optString("tag_name", "v1.2.0")
+                        val name = obj.optString("name", tagName)
+                        val publishedAt = obj.optString("published_at", "").take(10)
+                        val body = obj.optString("body", "")
+                        val htmlUrl = obj.optString("html_url", "https://github.com/Dragons-Fox0058/qr-code-studio/releases")
+
+                        val points = body.lines()
+                            .map { it.trim().removePrefix("-").removePrefix("*").trim() }
+                            .filter { it.isNotBlank() && !it.startsWith("#") }
+
+                        releases.add(
+                            GitHubRelease(
+                                tagName = tagName,
+                                name = name,
+                                publishedAt = publishedAt,
+                                body = body,
+                                htmlUrl = htmlUrl,
+                                points = if (points.isNotEmpty()) points else listOf(body)
+                            )
+                        )
+                    }
+                    _gitHubReleases.value = releases
+                } else {
+                    _releasesFetchError.value = "HTTP $code"
+                }
+            } catch (e: Exception) {
+                _releasesFetchError.value = e.localizedMessage ?: "Bağlantı hatası"
+            } finally {
+                _isLoadingReleases.value = false
+            }
+        }
+    }
+
+    fun setAutoCopyScan(enabled: Boolean) {
+        _autoCopyScan.value = enabled
+        prefs.edit().putBoolean("auto_copy_scan", enabled).apply()
+    }
+
+    fun setAutoOpenWeb(enabled: Boolean) {
+        _autoOpenWeb.value = enabled
+        prefs.edit().putBoolean("auto_open_web", enabled).apply()
+    }
+
+    fun setDefaultErrorCorrection(level: String) {
+        _defaultErrorCorrection.value = level
+        prefs.edit().putString("default_error_correction", level).apply()
+    }
+
+    fun setTranslationTargetLang(langCode: String) {
+        _translationTargetLang.value = langCode
+        prefs.edit().putString("translation_target_lang", langCode).apply()
+    }
+
+    fun translateText(text: String, targetLangCode: String? = null) {
+        val target = targetLangCode ?: _translationTargetLang.value
+        viewModelScope.launch {
+            _isTranslating.value = true
+            _translatedText.value = null
+            val (result, isOnline) = TranslationHelper.translate(
+                getApplication(),
+                text,
+                target
+            )
+            _translatedText.value = result
+            _translationIsOnline.value = isOnline
+            _isTranslating.value = false
+        }
+    }
+
+    fun clearTranslation() {
+        _translatedText.value = null
+    }
 
     // --- Update Notifications & Dialogs ---
     private val _showNotificationPrompt = MutableStateFlow(false)
@@ -100,7 +336,7 @@ class QrViewModel(application: Application) : AndroidViewModel(application) {
             NotificationHelper.createNotificationChannel(getApplication())
             NotificationHelper.sendUpdateNotification(
                 getApplication(),
-                "QR Code Studio v1.1.0",
+                "QR Code Studio v1.2.0",
                 "Güncelleme bildirimleri aktif! En yeni sürümü kullanıyorsunuz."
             )
         }
@@ -113,7 +349,7 @@ class QrViewModel(application: Application) : AndroidViewModel(application) {
             NotificationHelper.createNotificationChannel(getApplication())
             NotificationHelper.sendUpdateNotification(
                 getApplication(),
-                "QR Code Studio v1.1.0",
+                "QR Code Studio v1.2.0",
                 "Güncelleme bildirimleri başarıyla açıldı."
             )
         }
@@ -124,7 +360,7 @@ class QrViewModel(application: Application) : AndroidViewModel(application) {
             _isCheckingUpdate.value = true
             kotlinx.coroutines.delay(1200)
             _isCheckingUpdate.value = false
-            _statusMessage.emit("En güncel sürümü (v1.1.0) kullanıyorsunuz!")
+            _statusMessage.emit("En güncel sürümü (v1.2.0) kullanıyorsunuz!")
         }
     }
 
@@ -328,6 +564,13 @@ class QrViewModel(application: Application) : AndroidViewModel(application) {
     fun onQrScanned(rawResult: String) {
         if (_scannedResult.value == rawResult) return
         _scannedResult.value = rawResult
+
+        if (_beepOnScan.value) {
+            try {
+                val toneGen = ToneGenerator(AudioManager.STREAM_NOTIFICATION, 85)
+                toneGen.startTone(ToneGenerator.TONE_PROP_BEEP, 120)
+            } catch (_: Exception) {}
+        }
 
         // Save to DB
         viewModelScope.launch {

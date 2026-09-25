@@ -2,6 +2,7 @@ package com.example.ui.screens
 
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,9 +23,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.CloudDone
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.History
@@ -48,6 +51,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -75,18 +79,32 @@ import com.example.util.LocalAppStrings
 @Composable
 fun AboutScreen(
     viewModel: QrViewModel,
+    onBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
+    if (onBack != null) {
+        BackHandler(onBack = onBack)
+    }
+
     val context = LocalContext.current
     val strings = LocalAppStrings.current
     val scrollState = rememberScrollState()
 
     val isNotificationEnabled by viewModel.isNotificationEnabled.collectAsState()
     val isCheckingUpdate by viewModel.isCheckingUpdate.collectAsState()
+    val gitHubReleases by viewModel.gitHubReleases.collectAsState()
+    val isLoadingReleases by viewModel.isLoadingReleases.collectAsState()
+    val releasesFetchError by viewModel.releasesFetchError.collectAsState()
 
     var showMitDialog by remember { mutableStateOf(false) }
     var showThirdPartyDialog by remember { mutableStateOf(false) }
     var showChangelogDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(showChangelogDialog) {
+        if (showChangelogDialog && gitHubReleases.isEmpty()) {
+            viewModel.fetchGitHubReleases()
+        }
+    }
 
     val githubUrl = "https://github.com/Dragons-Fox0058/qr-code-studio"
 
@@ -97,6 +115,27 @@ fun AboutScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Back to settings header if navigated from settings
+        if (onBack != null) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = strings.backToSettings
+                    )
+                }
+                Text(
+                    text = strings.backToSettings,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
         // App Logo & Header Box
         Box(
             modifier = Modifier
@@ -291,14 +330,7 @@ fun AboutScreen(
             testTag = "item_changelog"
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Text(
-            text = strings.designCredits,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-            fontWeight = FontWeight.Medium
-        )
+        Spacer(modifier = Modifier.height(16.dp))
     }
 
     // --- DIALOGS ---
@@ -352,31 +384,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 ) {
                     ThirdPartyLicenseEntry(
                         name = "ZXing Core (3.5.3)",
+                        description = "Barkod ve QR kod işleme motoru. Milisaniyeler içinde QR kod matrislerini matematiksel olarak üretmek, hata düzeltme seviyelerini hesaplamak ve taranan QR verilerini ayrıştırmak için kullanılır.",
                         url = "https://github.com/zxing/zxing",
                         license = "Apache License 2.0"
                     )
                     ThirdPartyLicenseEntry(
                         name = "AndroidX CameraX (1.3.4)",
+                        description = "Google Jetpack modern kamera kütüphanesi. Donanım seviyesinde kamera yaşam döngüsü, canlı video analizi, flaş yönetimi ve akıcı QR tarama vizörü için kullanılır.",
                         url = "https://developer.android.com/training/camerax",
                         license = "Apache License 2.0"
                     )
                     ThirdPartyLicenseEntry(
                         name = "AndroidX Room (2.6.1)",
+                        description = "SQLite ORM veritabanı. Taranan ve oluşturulan tüm QR kod geçmişini cihazınızda %100 çevrimdışı, şifreli ve yerel olarak güvenle saklar.",
                         url = "https://developer.android.com/training/data-storage/room",
                         license = "Apache License 2.0"
                     )
                     ThirdPartyLicenseEntry(
                         name = "Coil Compose (2.7.0)",
+                        description = "Kotlin Coroutines tabanlı modern görsel yükleyici. Galeriden seçilen özel logo ve görsellerin işlenmesi ve QR kod merkezine yerleştirilmesi için kullanılır.",
                         url = "https://coil-kt.github.io/coil",
                         license = "Apache License 2.0"
                     )
                     ThirdPartyLicenseEntry(
                         name = "Jetpack Compose & Material 3",
+                        description = "Modern bildirimsel UI ve Material You tasarım sistemi. Dinamik duvar kağıdı temaları, akıcı animasyonlar, katlanabilir ekran uyumu ve erişilebilir bileşenler sağlar.",
                         url = "https://developer.android.com/jetpack/compose",
                         license = "Apache License 2.0"
                     )
                     ThirdPartyLicenseEntry(
-                        name = "Kotlin Coroutines & Flow",
+                        name = "Kotlin Coroutines & Flow (1.8.1)",
+                        description = "Asenkron ve eşzamanlı programlama kütüphanesi. Arka planda QR üretimi, veritabanı okuma/yazma ve çeviri işlemlerinin arayüzü dondurmadan çalışmasını sağlar.",
                         url = "https://kotlinlang.org",
                         license = "Apache License 2.0"
                     )
@@ -395,28 +433,151 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         AlertDialog(
             onDismissRequest = { showChangelogDialog = false },
             icon = { Icon(Icons.Default.History, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
-            title = { Text(text = strings.changelogTitle) },
+            title = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = strings.changelogTitle,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    IconButton(
+                        onClick = { viewModel.fetchGitHubReleases() },
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = strings.retryLoading,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                }
+            },
             text = {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    ChangelogVersionCard(
-                        version = "v1.1.0",
-                        date = strings.currentVersionBadge,
-                        isCurrent = true,
-                        points = strings.changelogV110List
-                    )
+                    // Status Badge
+                    if (isLoadingReleases) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(18.dp),
+                                strokeWidth = 2.dp
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Text(
+                                text = strings.fetchingReleases,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    } else if (gitHubReleases.isNotEmpty()) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(bottom = 4.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.CloudDone,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = strings.releasesFromGithub,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                        gitHubReleases.forEach { release ->
+                            ChangelogVersionCard(
+                                version = release.tagName,
+                                date = release.publishedAt,
+                                isCurrent = release.tagName.contains("1.2.0"),
+                                points = release.points
+                            )
+                        }
+                    } else {
+                        // Offline Fallback
+                        if (releasesFetchError != null) {
+                            Card(
+                                shape = RoundedCornerShape(10.dp),
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f))
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = strings.releasesOfflineFallback,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                    TextButton(
+                                        onClick = { viewModel.fetchGitHubReleases() },
+                                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 2.dp)
+                                    ) {
+                                        Text(strings.retryLoading, fontSize = 11.sp)
+                                    }
+                                }
+                            }
+                        }
 
-                    ChangelogVersionCard(
-                        version = "v1.0.0",
-                        date = strings.initialVersionBadge,
-                        isCurrent = false,
-                        points = strings.changelogV100List
-                    )
+                        ChangelogVersionCard(
+                            version = "v1.2.0",
+                            date = strings.currentVersionBadge,
+                            isCurrent = true,
+                            points = strings.changelogV120List
+                        )
+
+                        ChangelogVersionCard(
+                            version = "v1.1.0",
+                            date = "v1.1.0",
+                            isCurrent = false,
+                            points = strings.changelogV110List
+                        )
+
+                        ChangelogVersionCard(
+                            version = "v1.0.0",
+                            date = strings.initialVersionBadge,
+                            isCurrent = false,
+                            points = strings.changelogV100List
+                        )
+                    }
+
+                    // Direct Link to GitHub Releases Web Page
+                    OutlinedButton(
+                        onClick = {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Dragons-Fox0058/qr-code-studio/releases"))
+                            context.startActivity(intent)
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(10.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(strings.viewOnGithub, fontSize = 12.sp)
+                    }
                 }
             },
             confirmButton = {
@@ -497,6 +658,7 @@ fun AboutActionItem(
 @Composable
 fun ThirdPartyLicenseEntry(
     name: String,
+    description: String,
     url: String,
     license: String
 ) {
@@ -504,13 +666,13 @@ fun ThirdPartyLicenseEntry(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 5.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
         )
     ) {
-        Column(modifier = Modifier.padding(12.dp)) {
+        Column(modifier = Modifier.padding(14.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -524,10 +686,18 @@ fun ThirdPartyLicenseEntry(
                 Text(
                     text = license,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                lineHeight = 18.sp
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

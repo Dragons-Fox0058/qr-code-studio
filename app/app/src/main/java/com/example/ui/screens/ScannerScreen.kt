@@ -43,7 +43,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CloudDone
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.FlashOff
 import androidx.compose.material.icons.filled.FlashOn
@@ -51,11 +54,14 @@ import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
@@ -105,6 +111,9 @@ fun ScannerScreen(
 
     val scannedResult by viewModel.scannedResult.collectAsState()
     val flashEnabled by viewModel.flashEnabled.collectAsState()
+    val vibrateOnScan by viewModel.vibrateOnScan.collectAsState()
+    val autoCopyScan by viewModel.autoCopyScan.collectAsState()
+    val autoOpenWeb by viewModel.autoOpenWeb.collectAsState()
 
     var cameraRef by remember { mutableStateOf<Camera?>(null) }
     var hasCameraPermission by remember {
@@ -137,21 +146,37 @@ fun ScannerScreen(
         }
     }
 
-    // Trigger haptic vibration on new scan
+    // Trigger haptic vibration, auto-copy, auto-open on new scan
     LaunchedEffect(scannedResult) {
-        if (scannedResult != null) {
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
-                    vibratorManager?.defaultVibrator?.vibrate(
-                        VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)
-                    )
-                } else {
-                    @Suppress("DEPRECATION")
-                    val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
-                    vibrator?.vibrate(100)
-                }
-            } catch (_: Exception) {}
+        val result = scannedResult
+        if (result != null) {
+            if (vibrateOnScan) {
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
+                        vibratorManager?.defaultVibrator?.vibrate(
+                            VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)
+                        )
+                    } else {
+                        @Suppress("DEPRECATION")
+                        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+                        vibrator?.vibrate(100)
+                    }
+                } catch (_: Exception) {}
+            }
+
+            if (autoCopyScan) {
+                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("QR Kod", result)
+                clipboard.setPrimaryClip(clip)
+            }
+
+            if (autoOpenWeb && (result.startsWith("http://", ignoreCase = true) || result.startsWith("https://", ignoreCase = true))) {
+                try {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(result))
+                    context.startActivity(browserIntent)
+                } catch (_: Exception) {}
+            }
         }
     }
 
@@ -343,8 +368,13 @@ fun ScannerScreen(
         if (scannedResult != null) {
             ScannedResultDialog(
                 result = scannedResult!!,
-                onDismiss = { viewModel.clearScannedResult() },
+                viewModel = viewModel,
+                onDismiss = {
+                    viewModel.clearTranslation()
+                    viewModel.clearScannedResult()
+                },
                 onNavigateToCreate = { text ->
+                    viewModel.clearTranslation()
                     viewModel.clearScannedResult()
                     onNavigateToCreateWithText(text)
                 }
@@ -422,12 +452,17 @@ fun ScannerOverlay() {
 @Composable
 fun ScannedResultDialog(
     result: String,
+    viewModel: QrViewModel,
     onDismiss: () -> Unit,
     onNavigateToCreate: (String) -> Unit
 ) {
     val context = LocalContext.current
     val strings = LocalAppStrings.current
     val isUrl = result.startsWith("http://", ignoreCase = true) || result.startsWith("https://", ignoreCase = true)
+
+    val translatedText by viewModel.translatedText.collectAsState()
+    val isTranslating by viewModel.isTranslating.collectAsState()
+    val isOnline by viewModel.translationIsOnline.collectAsState()
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -447,7 +482,12 @@ fun ScannedResultDialog(
             }
         },
         text = {
-            Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                // Scanned Content Card
                 Card(
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
                     shape = RoundedCornerShape(10.dp),
@@ -461,12 +501,12 @@ fun ScannedResultDialog(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                // Actions row: Copy, Share, Open
+                // Actions row: Copy, Custom Share, Translate
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     OutlinedButton(
                         onClick = {
@@ -475,31 +515,110 @@ fun ScannedResultDialog(
                             clipboard.setPrimaryClip(clip)
                             Toast.makeText(context, strings.copiedToClipboard, Toast.LENGTH_SHORT).show()
                         },
-                        modifier = Modifier.weight(1f).testTag("dialog_button_copy")
+                        modifier = Modifier.weight(1f).testTag("dialog_button_copy"),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 4.dp, vertical = 6.dp)
                     ) {
-                        Icon(Icons.Default.ContentCopy, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Icon(Icons.Default.ContentCopy, contentDescription = null, modifier = Modifier.size(15.dp))
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(strings.copyText, fontSize = 12.sp)
+                        Text(strings.copyText, fontSize = 11.sp)
                     }
 
                     OutlinedButton(
                         onClick = {
-                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                                type = "text/plain"
-                                putExtra(Intent.EXTRA_TEXT, result)
-                            }
-                            context.startActivity(Intent.createChooser(shareIntent, strings.shareChooserTitle))
+                            viewModel.openShareSheet(result)
                         },
-                        modifier = Modifier.weight(1f).testTag("dialog_button_share")
+                        modifier = Modifier.weight(1f).testTag("dialog_button_share"),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 4.dp, vertical = 6.dp)
                     ) {
-                        Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(15.dp))
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(strings.shareQr, fontSize = 12.sp)
+                        Text(strings.shareQr, fontSize = 11.sp)
+                    }
+
+                    Button(
+                        onClick = {
+                            viewModel.translateText(result)
+                        },
+                        enabled = !isTranslating,
+                        modifier = Modifier.weight(1f).testTag("dialog_button_translate"),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 4.dp, vertical = 6.dp)
+                    ) {
+                        Icon(Icons.Default.Translate, contentDescription = null, modifier = Modifier.size(15.dp))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(strings.translateAction, fontSize = 11.sp)
+                    }
+                }
+
+                // Translation Result Card
+                if (isTranslating) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp)
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(strings.translating, style = MaterialTheme.typography.bodySmall)
+                    }
+                } else if (translatedText != null) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f)),
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(modifier = Modifier.padding(12.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = if (isOnline) Icons.Default.CloudDone else Icons.Default.Storage,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text(
+                                        text = if (isOnline) strings.translatedOnlineGoogle else strings.translatedOfflineLocal,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+
+                                TextButton(
+                                    onClick = {
+                                        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                        val clip = ClipData.newPlainText("Çeviri", translatedText ?: "")
+                                        clipboard.setPrimaryClip(clip)
+                                        Toast.makeText(context, strings.copiedToClipboard, Toast.LENGTH_SHORT).show()
+                                    },
+                                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 6.dp, vertical = 2.dp)
+                                ) {
+                                    Icon(Icons.Default.ContentCopy, contentDescription = null, modifier = Modifier.size(14.dp))
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Text(strings.copyText, fontSize = 11.sp)
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(6.dp))
+                            Text(
+                                text = translatedText ?: "",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
                     }
                 }
 
                 if (isUrl) {
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     Button(
                         onClick = {
                             try {
