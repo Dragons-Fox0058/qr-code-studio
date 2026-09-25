@@ -283,6 +283,49 @@ git push origin feature/your-feature-name
 
 ---
 
+## 💡 Why QR Code Studio?
+
+Unlike generic QR scanning applications on Google Play that request full storage permissions and display intrusive advertisements, **QR Code Studio** is built from the ground up with a privacy-first mindset:
+
+* **100% On-Device & Private:** Uses Android's modern **Photo Picker** API instead of broad media storage permissions (`READ_EXTERNAL_STORAGE`). Your photos and scan history never leave your device.
+* **Ad-Free & Open Source:** Free to use, fully transparent, licensed under MIT, and completely free of tracking or ads.
+* **Modern Android Stack:** Built with **Kotlin**, **Jetpack Compose**, **Material 3**, **Room Database**, and **ZXing**, served as a reference architecture created with **Google AI Studio**.
+* **HD QR Generation:** Supports generating high-resolution QR codes up to 2048x2048 pixels.
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+### Is QR Code Studio safe and private?
+
+Yes, absolutely. QR Code Studio operates entirely offline for all scanning and QR generation tasks.
+
+It only requests camera permission for live scanning and uses Android Photo Picker for gallery images without accessing your full storage.
+
+### Does QR Code Studio collect any user data?
+
+No.
+
+All your scan logs, custom QR codes, and application settings are stored locally on your device using an encrypted Room database.
+
+### What technology stack does this project use?
+
+This application is a 100% Kotlin project built using modern Android development practices:
+
+* **UI:** Jetpack Compose & Material 3 (including Material You dynamic coloring)
+* **Scanning Engine:** Google CameraX & ZXing
+* **Database:** Android Jetpack Room
+* **AI Co-Development:** Google AI Studio
+
+### Can I use QR Code Studio as a reference for my Jetpack Compose projects?
+
+Yes! The codebase is open-source under the MIT license.
+
+It serves as an excellent reference for implementing CameraX live preview in Jetpack Compose, modern Photo Picker integration, and offline-first Room database architecture.
+
+
+---
+
 ## ![](https://img.shields.io/badge/Licence-2D2D30?style=flat-square&logo=opensourceinitiative&logoColor=A8A9AD) 
 
 This project is licensed under the **MIT License** — see the [![License MIT](https://img.shields.io/badge/License-MIT-A31F34?style=flat-square&labelColor=A8A9AD)](https://opensource.org/licenses/MIT) for details.
