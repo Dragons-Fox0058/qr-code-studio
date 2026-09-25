@@ -40,25 +40,29 @@
 
 ## ![](https://img.shields.io/badge/Screenshots-1B3A2D?style=flat-square&logo=android&logoColor=3DDC84) 
 
-| Create | Scan | History | About |
-|--------|------|---------|-------|
-| ![Create](Screenshots/Create.png) | ![Scan](Screenshots/Scan.png) | ![History](Screenshots/History.png) | ![About](Screenshots/About.png) |
+| Create | Scan | History | Settings |
+|--------|------|---------|----------|
+| ![Create](Screenshots/Create.png) | ![Scan](Screenshots/Scan.png) | ![History](Screenshots/History.png) | ![Settings](Screenshots/Settings.png) |
 
 ---
 
 ## ![](https://img.shields.io/badge/Features-2D1B4E?style=flat-square&logo=materialdesign&logoColor=B39DDB) 
 
-- 20+ Language support
+- 50+ Language support
 - Free QR code generation
 - QR code scanning via camera and gallery
-- Scan history
-- About screen with version info and changelog
+- Continuous scan mode
+- Scan history with search
+- Settings screen with full customization
+- About screen with live GitHub release notes
 - Smart update & notification system
-- GitHub repository card
-- License & third-party library transparency
+- Multiple themes (Classic Blue, AMOLED Black, Ocean Blue, Emerald, Cyberpunk, Sunset, Rose)
 - Material You dynamic color (Android 12+)
 - Material 3 design language
-- Dark mode support
+- Audio feedback on scan (beep)
+- Custom QR resolution (512px, 1024px, 2048px HD)
+- Export format selection (PNG / JPEG)
+- Cache & history management
 
 ---
 
@@ -76,33 +80,68 @@ The application supports **20 languages**:
 | 6 | 🇮🇹 | Italiano | `it` |
 | 7 | 🇵🇹 | Português | `pt` |
 | 8 | 🇷🇺 | Русский | `ru` |
-| 9 | 🇨🇳 | 中文 | `zh` |
-| 10 | 🇯🇵 | 日本語 | `ja` |
-| 11 | 🇰🇷 | 한국어 | `ko` |
-| 12 | 🇸🇦 | العربية | `ar` |
-| 13 | 🇮🇳 | हिन्दी | `hi` |
-| 14 | 🇦🇿 | Azərbaycanca | `az` |
-| 15 | 🇳🇱 | Nederlands | `nl` |
-| 16 | 🇵🇱 | Polski | `pl` |
-| 17 | 🇺🇦 | Українська | `uk` |
-| 18 | 🇮🇩 | Bahasa Indonesia | `id` |
-| 19 | 🇻🇳 | Tiếng Việt | `vi` |
-| 20 | 🇬🇷 | Ελληνικά | `el` |
+| 9 | 🇨🇳 | 简体中文 | `zh` |
+| 10 | 🇹🇼 | 繁體中文 | `zh-tw` |
+| 11 | 🇯🇵 | 日本語 | `ja` |
+| 12 | 🇰🇷 | 한국어 | `ko` |
+| 13 | 🇸🇦 | العربية | `ar` |
+| 14 | 🇮🇳 | हिन्दी | `hi` |
+| 15 | 🇦🇿 | Azərbaycan | `az` |
+| 16 | 🇳🇱 | Nederlands | `nl` |
+| 17 | 🇵🇱 | Polski | `pl` |
+| 18 | 🇺🇦 | Українська | `uk` |
+| 19 | 🇮🇩 | Bahasa Indonesia | `id` |
+| 20 | 🇻🇳 | Tiếng Việt | `vi` |
+| 21 | 🇬🇷 | Ελληνικά | `el` |
+| 22 | 🇮🇷 | فارسی | `fa` |
+| 23 | 🇸🇪 | Svenska | `sv` |
+| 24 | 🇳🇴 | Norsk | `no` |
+| 25 | 🇩🇰 | Dansk | `da` |
+| 26 | 🇫🇮 | Suomi | `fi` |
+| 27 | 🇨🇿 | Čeština | `cs` |
+| 28 | 🇭🇺 | Magyar | `hu` |
+| 29 | 🇷🇴 | Română | `ro` |
+| 30 | 🇧🇬 | Български | `bg` |
+| 31 | 🇸🇰 | Slovenčina | `sk` |
+| 32 | 🇷🇸 | Српски | `sr` |
+| 33 | 🇭🇷 | Hrvatski | `hr` |
+| 34 | 🇧🇦 | Bosanski | `bs` |
+| 35 | 🇮🇱 | עברית | `he` |
+| 36 | 🇹🇭 | ไทย | `th` |
+| 37 | 🇲🇾 | Bahasa Melayu | `ms` |
+| 38 | 🇧🇩 | বাংলা | `bn` |
+| 39 | 🇵🇰 | اردو | `ur` |
+| 40 | 🇵🇭 | Filipino | `tl` |
+| 41 | 🇰🇪 | Kiswahili | `sw` |
+| 42 | 🇰🇿 | Қазақша | `kk` |
+| 43 | 🇺🇿 | Oʻzbekcha | `uz` |
+| 44 | 🇬🇪 | ქართული | `ka` |
+| 45 | 🇦🇲 | Հայերեն | `hy` |
+| 46 | 🇱🇹 | Lietuvių | `lt` |
+| 47 | 🇱🇻 | Latviešu | `lv` |
+| 48 | 🇪🇪 | Eesti | `et` |
+| 49 | 🇮🇸 | Íslenska | `is` |
+| 50 | 🇦🇱 | Shqip | `sq` |
 
 ---
 
 ## ![](https://img.shields.io/badge/Technologies_Used-1A0F3A?style=flat-square&logo=kotlin&logoColor=7F52FF) 
-
 | Technology | Explanation |
 |-----------|-------------|
-| [Kotlin](https://kotlinlang.org/) | Main programming language |
-| [Jetpack Compose](https://developer.android.com/jetpack/compose) | Modern user interface toolkit |
-| [Material 3](https://m3.material.io/) | Design system |
-| [AndroidX CameraX](https://developer.android.com/jetpack/androidx/releases/camera?hl=en) | Camera integration |
-| [ZXing Core](https://zxing.github.io/zxing/) | QR code generation and decoding |
-| [AndroidX Room](https://developer.android.com/jetpack/androidx/releases/room?hl=en) | Local database storage |
-| [Coil Compose](https://coil-kt.github.io/coil/compose/) | Image loading |
-| [Android Photo Picker](https://developer.android.com/training/data-storage/shared/photo-picker?hl=en) | Privacy-safe photo selection |
+| [Kotlin Coroutines & Flow](https://kotlinlang.org/docs/coroutines-overview.html) | Asynchronous task management, background database operations, and reactive UI state streams |
+| [AndroidX ViewModel & Lifecycle](https://developer.android.com/topic/libraries/architecture/viewmodel) | MVVM architecture and UI state persistence across screen rotations and lifecycle events |
+| [AndroidX Activity Compose](https://developer.android.com/jetpack/androidx/releases/activity) | Hardware back-gesture management (`BackHandler`), edge-to-edge configuration, and activity contracts |
+| [AndroidX Core KTX & WindowCompat](https://developer.android.com/jetpack/androidx/releases/core) | Status bar and navigation bar dynamic theming with `WindowInsetsControllerCompat` |
+| [Android ToneGenerator API](https://developer.android.com/reference/android/media/ToneGenerator) | Low-latency audio feedback (beep sound) on successful QR recognition |
+| [Android Vibrator & VibratorManager](https://developer.android.com/reference/android/os/VibratorManager) | Haptic vibration feedback on successful QR recognition |
+| [Google Translate & Dictionary Engine](https://translate.google.com/) | Real-time multilingual text translation (online API with offline local dictionary fallback) |
+| [Material You Dynamic Colors](https://m3.material.io/styles/color/dynamic-color/overview) | Android 12+ wallpaper-based dynamic color scheme generation (`dynamicColorScheme`) |
+| [Android SharedPreferences](https://developer.android.com/training/data-storage/shared-preferences) | Persistent local storage for user settings, selected theme, language, and scanner preferences |
+| [Android ClipboardManager](https://developer.android.com/reference/android/content/ClipboardManager) | Automatic and manual clipboard copy operations for scanned QR content |
+| [Android MediaStore & Intent System](https://developer.android.com/training/data-storage/shared/media) | Gallery export (`MediaStore.Images`), custom in-app share sheet, and receiving shared text/images |
+| [KSP (Kotlin Symbol Processing)](https://kotlinlang.org/docs/ksp-overview.html) | High-performance compile-time code generation for Room database |
+| [OkHttp & Retrofit](https://square.github.io/) | Modern HTTP networking and REST API client infrastructure |
+| [Moshi JSON](https://github.com/square/moshi) | Kotlin JSON serialization and deserialization library |
 
 ---
 
@@ -114,7 +153,7 @@ The application supports **20 languages**:
 
 ### Steps
 
-1. Go to the [**Releases**](https://github.com/Dragons-Fox0058/qr-code-studio/releases/latest) 
+1. Go to the [**Releases**](https://github.com/Dragons-Fox0058/qr-code-studio/releases/latest) page
 2. Download the latest **`.apk`** file
 3. On your Android device, open the downloaded file
 4. If prompted, enable **"Install from unknown sources"** in your settings
@@ -162,19 +201,22 @@ The app is designed with **privacy in mind** and uses the minimum number of perm
 | `CAMERA` | To scan QR codes live via camera | Only when switching to the **Scan** tab |
 | `POST_NOTIFICATIONS` | To notify when a new version is available (Android 13+) | On first launch |
 
-### ⚙️ Normal Permission (Granted Automatically at Install)
+### ⚙️ Normal Permissions (Granted Automatically at Install)
 
 | Permission | Reason | When Asked |
 |---|---|---|
 | `VIBRATE` | Haptic feedback when a QR code is successfully scanned | Never — granted automatically |
+| `INTERNET` | Fetch live release notes from GitHub API & translate scanned text | Never — granted automatically |
+| `ACCESS_NETWORK_STATE` | Check connectivity before online translation or update checks | Never — granted automatically |
 
 ### ⭐ Permissions We Do NOT Request (Privacy Highlights)
 
 | Permission | Why It's Not Needed |
 |---|---|
 | ❌ `READ_EXTERNAL_STORAGE` | Uses Android's modern **Photo Picker** — no broad gallery access needed |
-| ❌ `INTERNET` | Everything works **100% offline** — QR generation, scanning, and history are all on-device. No data is ever sent externally |
+| ❌ `ACCESS_FINE_LOCATION` | Wi-Fi QR creation/scanning is completely on-device without GPS |
 
+> **Privacy note:** Internet permission is used exclusively to fetch release notes from GitHub and for on-demand text translation. No personal data, created QR codes, scan logs, or history are ever tracked, stored on cloud servers, or sent externally. All QR generation, scanning, and database history remain 100% private and on-device.
 ---
 
 ## ![](https://img.shields.io/badge/Contributing-2D1B4E?style=flat-square&logo=materialdesign&logoColor=B39DDB) 
@@ -205,17 +247,32 @@ git push origin feature/your-feature-name
 
 ## ![](https://img.shields.io/badge/Changelog-1A0F3A?style=flat-square&logo=kotlin&logoColor=7F52FF) 
 
-### ![](https://img.shields.io/badge/v1.1.0-3DDC84?style=flat-square&logo=android&logoColor=white) 
+### ![](https://img.shields.io/badge/v1.2.0-3DDC84?style=flat-square&logo=android&logoColor=white) — 
 
-- **About Screen** — New 4th tab in bottom navigation with custom logo, version badge and release status
-- **Smart Update & Notification System** — First-launch permission dialog, Android 13+ `POST_NOTIFICATIONS` support, background notification channel and manual update check button
-- **GitHub Repository Card** — One-tap link to open the repository in browser
-- **License & Transparency** — MIT License dialog and third-party licenses (ZXing, CameraX, Room, Coil, Compose, Kotlin)
-- **Interactive Changelog** — In-app version history for v1.0.0 and v1.1.0
+- **Settings Screen** — About moved from navigation bar into Settings; 4-tab navigation: Create, Scan, History, Settings
+- **Live GitHub Release Notes** — Changelog fetched directly from GitHub Releases API with online/offline fallback and retry button
+- **Multiple Themes** — Classic Blue, AMOLED Black, Ocean Blue, Emerald, Cyberpunk, Sunset, Rose
+- **Material You Toggle** — Dynamic color (Android 12+) can now be enabled/disabled in Settings
+- **Navigation Bar Color Sync** — System navigation bar and status bar color updates instantly with selected theme
+- **Audio Feedback** — Optional beep sound on successful QR scan (ToneGenerator)
+- **Continuous Scan Mode** — Camera stays open after scan for rapid scanning
+- **QR Resolution Selector** — 512px, 1024px, 2048px (HD) quick selection chips
+- **Export Format** — PNG and JPEG format preferences
+- **Cache & Data Management** — Clear cache and clear history options in Settings
+- **Localization Fixes** — All remaining hardcoded strings connected to LanguageManager
+- **UI Cleanup** — Removed top bar language/dark mode toggles and redundant theme chips
+
+### ![](https://img.shields.io/badge/v1.1.0-6750A4?style=flat-square&logo=android&logoColor=white)
+
+- **About Screen** — 4th tab with custom logo, version badge and release status
+- **Smart Update & Notification System** — First-launch dialog, Android 13+ `POST_NOTIFICATIONS`, notification channel and manual update check
+- **GitHub Repository Card** — One-tap link to open repository in browser
+- **License & Transparency** — MIT License dialog and third-party licenses
+- **Interactive Changelog** — In-app version history
 - **Material You (Dynamic Color)** — Android 12+ (API 31+) wallpaper-based dynamic theming
-- **Full Localization** — All new screens fully translated in 20+ languages
+- **Full Localization** — All screens translated in 20+ languages
 
-### ![](https://img.shields.io/badge/v1.0.0-A8A9AD?style=flat-square&logo=android&logoColor=white) 
+### ![](https://img.shields.io/badge/v1.0.0-A8A9AD?style=flat-square&logo=android&logoColor=white)
 
 - QR code generation
 - QR code scanning via camera and gallery
