@@ -1,0 +1,31 @@
+# QR Code Studio
+
+> Open-source, privacy-first Android QR Code scanner and generator application built with Kotlin, Jetpack Compose, Material 3, and Google AI Studio.
+
+## Overview
+
+QR Code Studio is a modern, fully open-source Android app designed for fast, offline, and secure QR code scanning and generation.
+
+It requires minimal permissions, uses Android's modern Photo Picker for gallery access, and processes all scan and generation data strictly on-device.
+
+## Key Features
+
+* **Privacy-First Architecture:** 100% on-device processing. Uses Android Photo Picker instead of broad media permissions (`READ_EXTERNAL_STORAGE`).
+* **Live & Gallery Scanning:** Real-time scanning via CameraX with continuous scan mode support and gallery image scanning.
+* **HD QR Code Generation:** Generate custom high-definition QR codes up to 2048x2048 pixels in PNG or JPEG formats.
+* **Modern UI & Personalization:** Built with Jetpack Compose & Material 3, featuring Material You dynamic color support and 7 preset themes (e.g., AMOLED Black, Cyberpunk, Emerald).
+* **Multilingual Support:** Supports over 50 languages with offline dictionary integration.
+* **Offline History:** Local scan logs and custom codes saved securely via Jetpack Room database.
+
+## Technical Details
+
+* **Language:** 100% Kotlin
+* **UI Framework:** Jetpack Compose & Material 3
+* **Camera & Scanning:** Google CameraX & ZXing
+* **Database:** Android Jetpack Room
+* **AI Co-Development:** Google AI Studio
+* **License:** MIT License
+
+## Links
+
+* **GitHub Repository:** https://github.com/Dragons-Fox0058/qr-code-studio
