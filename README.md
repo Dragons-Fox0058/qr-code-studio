@@ -68,7 +68,7 @@
 
 ## ![](https://img.shields.io/badge/Supported_Languages-0D2048?style=flat-square&logo=googletranslate&logoColor=4285F4) 
 
-The application supports **20 languages**:
+The application supports **50 languages**:
 
 | # | Flag | Language | Code |
 |---|------|----------|------|
