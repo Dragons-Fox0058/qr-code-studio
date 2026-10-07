@@ -63,6 +63,12 @@
 - Custom QR resolution (512px, 1024px, 2048px HD)
 - Export format selection (PNG / JPEG)
 - Cache & history management
+- Support for 6 themes
+- Vibration
+- It opens in the default browser.
+- continuous scanning mode
+- audible warning
+- QR code error correction
 
 ---
 
