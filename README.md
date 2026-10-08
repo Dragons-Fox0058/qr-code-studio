@@ -8,7 +8,7 @@
 <!-- BADGES -->
 [![Download](https://img.shields.io/badge/Android-Download-0D47A1?style=for-the-badge&logo=android&logoColor=white&labelColor=3DDC84)](https://github.com/Dragons-Fox0058/qr-code-studio/releases/latest)
 -
-[![License MIT](https://img.shields.io/badge/License(project)-MIT-A31F34?style=for-the-badge&labelColor=A8A9AD)](https://github.com/Dragons-Fox0058/qr-code-studio?tab=MIT-1-ov-file)
+[![License MIT](https://img.shields.io/badge/License-MIT-A31F34?style=for-the-badge&labelColor=A8A9AD)](https://github.com/Dragons-Fox0058/qr-code-studio?tab=MIT-1-ov-file)
 
 <p>This is a QR code scanning application created using artificial intelligence (Google AI Studio).</p>
 
@@ -17,8 +17,8 @@
 [![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)](https://kotlinlang.org)
 [![Jetpack Compose](https://img.shields.io/badge/Jetpack_Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
 [![Material 3](https://img.shields.io/badge/Material_3-6750A4?style=for-the-badge&logo=material-design&logoColor=white)](https://m3.material.io)
-[![License MIT](https://img.shields.io/badge/License-MIT-A31F34?style=for-the-badge&labelColor=A8A9AD)](https://opensource.org/licenses/MIT)
-
+[![Latest Release](https://img.shields.io/github/v/release/Dragons-Fox0058/qr-code-studio?style=for-the-badge)](https://github.com/Dragons-Fox0058/qr-code-studio/releases/latest)
+[![APK Size](https://img.shields.io/badge/Code_size-27,24-brightgreen?style=for-the-badge&logo=android&logoColor=white)](https://github.com/Dragons-Fox0058/qr-code-studio/releases/latest)
 </div>
 
 ---
@@ -48,6 +48,7 @@
 
 ## ![](https://img.shields.io/badge/Features-2D1B4E?style=flat-square&logo=materialdesign&logoColor=B39DDB) 
 
+- Open source
 - 50+ Language support
 - Free QR code generation
 - QR code scanning via camera and gallery
