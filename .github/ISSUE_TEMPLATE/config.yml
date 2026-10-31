@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/Dragons-Fox0058/qr-code-studio/security
+    about: Do not report security vulnerabilities publicly. See SECURITY.md for private reporting guidance.
+  - name: Project support
+    url: https://github.com/Dragons-Fox0058/qr-code-studio/blob/main/SUPPORT.md
+    about: Read the support guide before opening a general question.
