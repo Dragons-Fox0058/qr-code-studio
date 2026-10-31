@@ -1,4 +1,4 @@
-## Summary
+# Summary
 
 Describe what this pull request changes and why.
 
@@ -12,7 +12,8 @@ Describe what this pull request changes and why.
 
 ## Validation
 
-Describe the checks you ran and their results. If no checks were applicable, explain why.
+Describe the checks you ran and their results. If no checks were applicable,
+explain why.
 
 ## Checklist
 
@@ -20,8 +21,10 @@ Describe the checks you ran and their results. If no checks were applicable, exp
 - [ ] Documentation has been updated where needed.
 - [ ] No secrets, credentials, or personal data are included.
 - [ ] I reviewed the complete diff and removed unrelated changes.
-- [ ] Relevant checks have been run, or the reason they were not run is documented.
+- [ ] Relevant checks have been run, or the reason they were not run is
+      documented.
 
 ## Screenshots / context
 
-Add screenshots, logs, or other context when useful. Remove sensitive information first.
+Add screenshots, logs, or other context when useful. Remove sensitive
+information first.
