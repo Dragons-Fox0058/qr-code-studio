@@ -4,7 +4,6 @@ This folder contains supplementary project-maintenance guides.
 
 ## Guides
 
-- [Development guide](DEVELOPMENT.md) — local build, test, and contribution workflow.
 - [Architecture](../ARCHITECTURE.md) — repository structure and current technical overview.
 - [Roadmap](../ROADMAP.md) — planned maintenance and product work.
 - [FAQ](../FAQ.md) — common contributor and user questions.
