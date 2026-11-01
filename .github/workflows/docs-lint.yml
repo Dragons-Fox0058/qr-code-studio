@@ -8,6 +8,10 @@ on:
       - "SECURITY.md"
       - "SUPPORT.md"
       - "CHANGELOG.md"
+      - "HELP.md"
+      - "INSTALL.md"
+      - "LICENSE_ADDITIONAL.md"
+      - "docs/**"
       - ".github/ISSUE_TEMPLATE/**"
       - ".github/PULL_REQUEST_TEMPLATE.md"
       - ".github/workflows/docs-lint.yml"
@@ -18,6 +22,10 @@ on:
       - "SECURITY.md"
       - "SUPPORT.md"
       - "CHANGELOG.md"
+      - "HELP.md"
+      - "INSTALL.md"
+      - "LICENSE_ADDITIONAL.md"
+      - "docs/**"
       - ".github/ISSUE_TEMPLATE/**"
       - ".github/PULL_REQUEST_TEMPLATE.md"
       - ".github/workflows/docs-lint.yml"
@@ -43,4 +51,8 @@ jobs:
             SECURITY.md
             SUPPORT.md
             CHANGELOG.md
+            HELP.md
+            INSTALL.md
+            LICENSE_ADDITIONAL.md
+            docs/*.md
             .github/PULL_REQUEST_TEMPLATE.md
