@@ -13,6 +13,7 @@ use semantic versioning where practical.
 
 ### Added
 
+- End-user help and installation guides plus maintainer and contributor documentation.
 - Repository contribution, support, and security policies.
 - GitHub issue and pull request templates.
 - Documentation quality workflow.
