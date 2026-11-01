@@ -4,9 +4,9 @@ The Android module includes dependencies for local unit tests, Android instrumen
 
 ## Local checks
 
-Run these commands from the repository's \`app/\` directory:
+Run these commands from the repository's `app/` directory:
 
-\`\`\`bash
+```bash
 # Unit tests for the debug variant
 ./gradlew :app:testDebugUnitTest
 
@@ -15,17 +15,17 @@ Run these commands from the repository's \`app/\` directory:
 
 # Assemble a debug APK
 ./gradlew :app:assembleDebug
-\`\`\`
+```
 
-Use \`gradlew.bat\` on Windows.
+Use `gradlew.bat` on Windows.
 
 ## Instrumentation tests
 
 Instrumentation tests require an Android emulator or connected device with a compatible API level:
 
-\`\`\`bash
+```bash
 ./gradlew :app:connectedDebugAndroidTest
-\`\`\`
+```
 
 ## Review checklist
 

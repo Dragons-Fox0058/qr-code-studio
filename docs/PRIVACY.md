@@ -8,11 +8,11 @@ The current Android manifest declares:
 
 | Permission or feature | Why Android exposes it |
 | --- | --- |
-| \`CAMERA\` | Allows camera-based scanning when that feature is used. |
-| \`VIBRATE\` | Allows vibration feedback. |
-| \`POST_NOTIFICATIONS\` | Allows notifications on Android versions that require this permission. |
-| \`INTERNET\` | Allows network communication. |
-| \`ACCESS_NETWORK_STATE\` | Allows the app to inspect network connectivity state. |
+| `CAMERA` | Allows camera-based scanning when that feature is used. |
+| `VIBRATE` | Allows vibration feedback. |
+| `POST_NOTIFICATIONS` | Allows notifications on Android versions that require this permission. |
+| `INTERNET` | Allows network communication. |
+| `ACCESS_NETWORK_STATE` | Allows the app to inspect network connectivity state. |
 | Camera hardware feature | Declared as optional at package level. |
 
 Actual prompts and behavior depend on Android version, device capabilities, and the feature being used.

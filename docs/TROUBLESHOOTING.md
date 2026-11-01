@@ -23,7 +23,7 @@ Android may require permission for the browser or file manager to install apps f
 
 ## Gradle sync or build fails
 
-- Open the \`app/\` directory as the Android Studio project.
+- Open the `app/` directory as the Android Studio project.
 - Confirm that Android Studio is using JDK 17 or newer.
 - Install the SDK components requested by Gradle.
 - Check network access to the configured dependency repositories.
