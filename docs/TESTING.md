@@ -4,20 +4,20 @@ The Android module includes dependencies for local unit tests, Android instrumen
 
 ## Local checks
 
-Run these commands from the repository's `app/` directory:
+The repository currently does not include the Gradle wrapper scripts. Install Gradle 9.3.1 locally or use Android Studio's configured Gradle installation. Run these commands from the repository's `app/` directory:
 
 ```bash
 # Unit tests for the debug variant
-./gradlew :app:testDebugUnitTest
+gradle :app:testDebugUnitTest
 
 # Android lint for the debug variant
-./gradlew :app:lintDebug
+gradle :app:lintDebug
 
 # Assemble a debug APK
-./gradlew :app:assembleDebug
+gradle :app:assembleDebug
 ```
 
-Use `gradlew.bat` on Windows.
+Use the installed `gradle` command from PowerShell or Command Prompt on Windows.
 
 ## Instrumentation tests
 
