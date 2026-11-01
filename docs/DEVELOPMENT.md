@@ -30,20 +30,20 @@ Some services may require separate Firebase or provider-side configuration. A su
 
 ## Build commands
 
-Run commands from the repository's `app/` directory:
+The repository currently contains Gradle configuration files but does not include the Gradle wrapper scripts (`gradlew` and `gradlew.bat`). Install Gradle 9.3.1 locally, or use Android Studio's configured Gradle installation. Run commands from the repository's `app/` directory:
 
 ```bash
 # Build a debug APK
-./gradlew :app:assembleDebug
+gradle :app:assembleDebug
 
 # Run local unit tests
-./gradlew :app:testDebugUnitTest
+gradle :app:testDebugUnitTest
 
 # Run Android lint checks
-./gradlew :app:lintDebug
+gradle :app:lintDebug
 ```
 
-On Windows, use `gradlew.bat` instead of `./gradlew`.
+On Windows, use the installed `gradle` command from PowerShell or Command Prompt. Do not assume `./gradlew` is available until wrapper scripts are added in a separately reviewed change.
 
 The debug build can depend on local signing/configuration files referenced by the Gradle scripts. Do not commit private signing material to work around a local configuration issue.
 

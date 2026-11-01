@@ -11,7 +11,7 @@ qr-code-studio/
 ├── docs/
 ├── Screenshots/
 ├── app/
-│   ├── gradle/
+│   ├── gradle/             # Version catalog and wrapper properties
 │   └── app/
 │       └── src/
 ├── CHANGELOG.md
@@ -33,7 +33,7 @@ qr-code-studio/
 | `.github/ISSUE_TEMPLATE/` | Issue forms for bug reports and feature requests. |
 | `.github/workflows/` | GitHub Actions workflows. |
 | `Screenshots/` | Images used to illustrate the project. |
-| `app/` | Android Studio project root, including Gradle wrapper and module configuration. |
+| `app/` | Android Studio project root, Gradle settings, and version catalog. Wrapper scripts are not currently committed. |
 | `app/app/` | Android application module. |
 | `docs/` | Additional maintainer and contributor guides. |
 
